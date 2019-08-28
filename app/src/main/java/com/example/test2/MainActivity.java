@@ -2,6 +2,7 @@ package com.example.test2;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,11 +38,13 @@ public class MainActivity extends AppCompatActivity {
     private static String TAG = "phpquerytest";
 
     private static final String TAG_JSON="webnautes";
-    private static final String TAG_ID = "id";
-    private static final String TAG_NAME = "name";
-    private static final String TAG_ADDRESS ="country";
+    private static final String TAG_text1 = "text1";
+    private static final String TAG_text2 = "text2";
+    private static final String TAG_text3 = "text3";
+
 
     private TextView mTextViewResult;
+    private TextView listlist;
     ArrayList<HashMap<String, String>> mArrayList;
     ListView mListViewList;
     EditText mEditTextSearchKeyword1, mEditTextSearchKeyword2;
@@ -58,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         mListViewList = (ListView) findViewById(R.id.listView_main_list);
         mEditTextSearchKeyword1 = (EditText) findViewById(R.id.editText_main_searchKeyword1);
         mEditTextSearchKeyword2 = (EditText) findViewById(R.id.editText_main_searchKeyword2);
-
 
         Button button_search = (Button) findViewById(R.id.button_main_search);
         button_search.setOnClickListener(new View.OnClickListener() {
@@ -108,17 +110,18 @@ public class MainActivity extends AppCompatActivity {
             mTextViewResult.setText(result);
             Log.d(TAG, "response - " + result);
             if (result.compareTo("error") == 0){
-                alert.setMessage("에러입니다!");
+                alert.setMessage("아이디와 비밀번호가 틀렸습니다!");
                 alert.show();
             }
-            if (result == null){
-
-                mTextViewResult.setText(errorString);
-
+            else if(result.compareTo("input") == 0){
+                alert.setMessage("아이디를 입력해 주세요!");
+                alert.show();
             }
             else {
 
                 mJsonString = result;
+                alert.setMessage(result);
+                alert.show();
                 showResult();
 
             }
@@ -152,8 +155,6 @@ public class MainActivity extends AppCompatActivity {
                 outputStream.write(postParameters.getBytes("UTF-8"));
                 outputStream.flush();
                 outputStream.close();
-
-
                 int responseStatusCode = httpURLConnection.getResponseCode();
                 Log.d(TAG, "response code - " + responseStatusCode);
 
@@ -165,71 +166,61 @@ public class MainActivity extends AppCompatActivity {
                     inputStream = httpURLConnection.getErrorStream();
                 }
 
-
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
                 StringBuilder sb = new StringBuilder();
                 String line;
 
                 while((line = bufferedReader.readLine()) != null){
                     sb.append(line);
                 }
-
-
                 bufferedReader.close();
-
-
                 return sb.toString().trim();
-
-
             } catch (Exception e) {
-
                 Log.d(TAG, "InsertData: Error ", e);
                 errorString = e.toString();
-
                 return null;
             }
-
         }
     }
 
 
     private void showResult(){
         try {
+            String code="";
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
 
             for(int i=0;i<jsonArray.length();i++){
-
-                JSONObject item = jsonArray.getJSONObject(i);
-
-                String id = item.getString(TAG_ID);
-                String name = item.getString(TAG_NAME);
-                String address = item.getString(TAG_ADDRESS);
-
                 HashMap<String,String> hashMap = new HashMap<>();
+                JSONObject jObject = jsonArray.getJSONObject(i);
 
-                hashMap.put(TAG_ID, id);
-                hashMap.put(TAG_NAME, name);
-                hashMap.put(TAG_ADDRESS, address);
+                String text1 = jObject.optString(TAG_text1);
+                String text2 = jObject.getString(TAG_text2);
+                String text3 = jObject.getString(TAG_text3);
 
+                hashMap.put(TAG_text1, text1);
+                hashMap.put(TAG_text2, text2);
+                hashMap.put(TAG_text3, text3);
+
+                Intent intent = new Intent(MainActivity.this,Subactivity.class);
+                intent.putExtra("text1",text1);
+                intent.putExtra("text2",text2);
+                intent.putExtra("text3",text3);
+
+                startActivity(intent);
                 mArrayList.add(hashMap);
             }
-
             ListAdapter adapter = new SimpleAdapter(
                     MainActivity.this, mArrayList, R.layout.item_list,
-                    new String[]{TAG_ID,TAG_NAME, TAG_ADDRESS},
-                    new int[]{R.id.textView_list_id, R.id.textView_list_name, R.id.textView_list_address}
+                    new String[]{TAG_text1,TAG_text2,TAG_text3},
+                    new int[]{R.id.textView_list_id, R.id.textView_list_name,R.id.textView_list_address}
             );
 
+
             mListViewList.setAdapter(adapter);
-
-
         } catch (JSONException e) {
-
             Log.d(TAG, "showResult : ", e);
-
         }
 
     }
