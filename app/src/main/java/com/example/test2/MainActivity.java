@@ -196,29 +196,22 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject jObject = jsonArray.getJSONObject(i);
 
                 String text1 = jObject.optString(TAG_text1);
-                String text2 = jObject.getString(TAG_text2);
-                String text3 = jObject.getString(TAG_text3);
+                String text2 = jObject.optString(TAG_text2);
+                String text3 = jObject.optString(TAG_text3);
 
                 hashMap.put(TAG_text1, text1);
                 hashMap.put(TAG_text2, text2);
                 hashMap.put(TAG_text3, text3);
 
                 Intent intent = new Intent(MainActivity.this,Subactivity.class);
-                intent.putExtra("text1",text1);
-                intent.putExtra("text2",text2);
-                intent.putExtra("text3",text3);
+                intent.putExtra("text_1",text1);
+                intent.putExtra("text_2",text2);
+                intent.putExtra("text_3",text3);
 
                 startActivity(intent);
                 mArrayList.add(hashMap);
             }
-            ListAdapter adapter = new SimpleAdapter(
-                    MainActivity.this, mArrayList, R.layout.item_list,
-                    new String[]{TAG_text1,TAG_text2,TAG_text3},
-                    new int[]{R.id.textView_list_id, R.id.textView_list_name,R.id.textView_list_address}
-            );
 
-
-            mListViewList.setAdapter(adapter);
         } catch (JSONException e) {
             Log.d(TAG, "showResult : ", e);
         }
