@@ -9,21 +9,17 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import android.speech.tts.TextToSpeech.OnInitListener;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class Subactivity extends AppCompatActivity {
+public class SubActivity extends AppCompatActivity {
     Intent intent;
     SpeechRecognizer mRecognizer;
     TextView textView;
@@ -35,7 +31,7 @@ public class Subactivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sub);
 
-        textView = (TextView) findViewById(R.id.textView1); /*TextView선언*/
+        textView = (TextView) findViewById(R.id.textView1);
         tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -87,9 +83,6 @@ public class Subactivity extends AppCompatActivity {
 
             }
         }, 7000);
-//        if(resum.equals("1번")){
-//            textView.setText("안녕하세용!!");
-//        }
 
     }
 
@@ -106,7 +99,6 @@ public class Subactivity extends AppCompatActivity {
 
         @Override
         public void onRmsChanged(float v) {
-            textView.setText("Changed");
         }
 
         @Override
@@ -121,8 +113,17 @@ public class Subactivity extends AppCompatActivity {
 
         @Override
         public void onError(int i) {
-            textView.setText("너무 늦게 말하면 오류뜹니다");
+            tts.speak("인식에 실패했습니다. 다시 말씀해 주세요.",TextToSpeech.QUEUE_FLUSH, null);
+            mRecognizer.setRecognitionListener(recognitionListener);
 
+            Handler delayHandler = new Handler();
+            delayHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mRecognizer.startListening(intent);
+
+                }
+            }, 4000);
         }
 
         @Override
@@ -134,8 +135,32 @@ public class Subactivity extends AppCompatActivity {
             String[] rs = new String[mResult.size()];
             mResult.toArray(rs);
             resum = rs[0];
+            if((resum.compareTo("1번") == 0) ||(resum.compareTo("일본")==0)){
+                textView.setText("1번");
+                tts.speak("1번 나무를 블루투스 로 전송합니다.",TextToSpeech.QUEUE_FLUSH, null);
+            }
+            else if((resum.compareTo("2번") == 0) ||(resum.compareTo("이번")==0)){
+                textView.setText("2번");
+                tts.speak("2번 아프니까 청춘이다 를 블루투스로 전송합니다.",TextToSpeech.QUEUE_FLUSH, null);
+            }
+            else if((resum.compareTo("3번") == 0) ||(resum.compareTo("삼번")==0)){
+                textView.setText("3번!!");
+                tts.speak("3번 나의 라임 오렌지 나무 를 블루투스로 전송합니다.",TextToSpeech.QUEUE_FLUSH, null);
+            }
+            else{
+                tts.speak("인식에 실패했습니다. 다시 말씀해 주세요.",TextToSpeech.QUEUE_FLUSH, null);
+                mRecognizer.setRecognitionListener(recognitionListener);
 
-            textView.setText(resum);
+                Handler delayHandler = new Handler();
+                delayHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRecognizer.startListening(intent);
+
+                    }
+                }, 6000);
+            }
+            System.out.println(resum);
         }
 
         @Override
@@ -145,5 +170,6 @@ public class Subactivity extends AppCompatActivity {
         @Override
         public void onEvent(int i, Bundle bundle) {
         }
+
     };
 }

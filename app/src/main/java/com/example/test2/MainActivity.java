@@ -102,20 +102,20 @@ public class MainActivity extends AppCompatActivity {
             });
             progressDialog.dismiss();
             Log.d(TAG, "response - " + result);
-//            if (result.compareTo("error") == 0){
-//                alert.setMessage("아이디와 비밀번호가 틀렸습니다!");
-//                alert.show();
-//            }
-//            else if(result.compareTo("input") == 0){
-//                alert.setMessage("아이디를 입력해 주세요!");
-//                alert.show();
-//            }
-//            else {
+            if (result.compareTo("error") == 0){
+                alert.setMessage("아이디와 비밀번호가 틀렸습니다!");
+                alert.show();
+            }
+            else if(result.compareTo("input") == 0){
+                alert.setMessage("아이디를 입력해 주세요!");
+                alert.show();
+            }
+            else {
 
                 mJsonString = result;
                 showResult();
 
-//            }
+            }
         }
 
 
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
                 hashMap.put(TAG_text2, text2);
                 hashMap.put(TAG_text3, text3);
 
-                Intent intent = new Intent(MainActivity.this,Subactivity.class);
+                Intent intent = new Intent(MainActivity.this,SubActivity.class);
                 intent.putExtra("text_1",text1);
                 intent.putExtra("text_2",text2);
                 intent.putExtra("text_3",text3);
