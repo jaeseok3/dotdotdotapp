@@ -46,7 +46,7 @@ public class Subactivity extends AppCompatActivity {
                     tts.setSpeechRate((float) 1.1);
                     tts.setPitch((float)1.0);
                 }
-                tts.speak("읽을 책을 말해주세요!",TextToSpeech.QUEUE_FLUSH, null);
+                tts.speak("이 어플은 시각장애인을 위해 만들어진 닷 닷 닷 어플입니다. 읽을 책을 말해주세요!",TextToSpeech.QUEUE_FLUSH, null);
             }
         });
 
@@ -84,7 +84,7 @@ public class Subactivity extends AppCompatActivity {
                 mRecognizer.startListening(intent);
 
             }
-        }, 3000);
+        }, 7000);
 
 
 
