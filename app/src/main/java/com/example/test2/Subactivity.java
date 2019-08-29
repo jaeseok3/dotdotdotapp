@@ -29,7 +29,7 @@ public class Subactivity extends AppCompatActivity {
     TextView textView;
     private TextToSpeech tts;              // TTS 변수 선언
     private final int MY_PERMISSIONS_RECORD_AUDIO = 1;
-
+    String resum;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +46,10 @@ public class Subactivity extends AppCompatActivity {
                     tts.setSpeechRate((float) 1.1);
                     tts.setPitch((float)1.0);
                 }
-                tts.speak("이 어플은 시각장애인을 위해 만들어진 닷 닷 닷 어플입니다. 읽을 책을 말해주세요!",TextToSpeech.QUEUE_FLUSH, null);
+                tts.speak("이 어플은 시각장애인을 위해 만들어진 닽닽닽 어플입니다. 읽을 책을 말해주세요!",TextToSpeech.QUEUE_FLUSH, null);
+
             }
+
         });
 
 //        Intent intent_1 = getIntent();
@@ -85,12 +87,13 @@ public class Subactivity extends AppCompatActivity {
 
             }
         }, 7000);
-
-
+//        if(resum.equals("1번")){
+//            textView.setText("안녕하세용!!");
+//        }
 
     }
 
-    private RecognitionListener recognitionListener = new RecognitionListener() {
+    private final RecognitionListener recognitionListener = new RecognitionListener() {
         @Override
         public void onReadyForSpeech(Bundle bundle) {
             textView.setText("Ready");
@@ -130,8 +133,9 @@ public class Subactivity extends AppCompatActivity {
 
             String[] rs = new String[mResult.size()];
             mResult.toArray(rs);
+            resum = rs[0];
 
-            textView.setText(rs[0]);
+            textView.setText(resum);
         }
 
         @Override

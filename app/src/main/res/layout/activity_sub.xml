@@ -9,15 +9,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/text1_btn"
-        android:id="@+id/textView1"></TextView>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/text1_btn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView1"
         app:layout_constraintBottom_toBottomOf="parent"
-        ></Button>
+        android:id="@+id/textView1"></TextView>
 </androidx.constraintlayout.widget.ConstraintLayout>

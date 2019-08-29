@@ -42,11 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG_text2 = "text2";
     private static final String TAG_text3 = "text3";
 
-
-    private TextView mTextViewResult;
-    private TextView listlist;
     ArrayList<HashMap<String, String>> mArrayList;
-    ListView mListViewList;
     EditText mEditTextSearchKeyword1, mEditTextSearchKeyword2;
     String mJsonString;
 
@@ -57,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTextViewResult = (TextView)findViewById(R.id.textView_main_result);
-        mListViewList = (ListView) findViewById(R.id.listView_main_list);
         mEditTextSearchKeyword1 = (EditText) findViewById(R.id.editText_main_searchKeyword1);
         mEditTextSearchKeyword2 = (EditText) findViewById(R.id.editText_main_searchKeyword2);
 
@@ -107,24 +101,21 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             progressDialog.dismiss();
-            mTextViewResult.setText(result);
             Log.d(TAG, "response - " + result);
-            if (result.compareTo("error") == 0){
-                alert.setMessage("아이디와 비밀번호가 틀렸습니다!");
-                alert.show();
-            }
-            else if(result.compareTo("input") == 0){
-                alert.setMessage("아이디를 입력해 주세요!");
-                alert.show();
-            }
-            else {
+//            if (result.compareTo("error") == 0){
+//                alert.setMessage("아이디와 비밀번호가 틀렸습니다!");
+//                alert.show();
+//            }
+//            else if(result.compareTo("input") == 0){
+//                alert.setMessage("아이디를 입력해 주세요!");
+//                alert.show();
+//            }
+//            else {
 
                 mJsonString = result;
-                alert.setMessage(result);
-                alert.show();
                 showResult();
 
-            }
+//            }
         }
 
 
@@ -187,7 +178,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void showResult(){
         try {
-            String code="";
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
 
@@ -213,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         } catch (JSONException e) {
-            Log.d(TAG, "showResult : ", e);
+            System.out.println("showResult : " + e);
         }
 
     }
